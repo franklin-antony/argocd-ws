@@ -10,7 +10,7 @@ spec:
 
   # Only approved Git/chart sources for Kong Gateway deployments.
   sourceRepos:
-    - git@github.com:<YOUR_GITHUB_ORG>/dda-kong-gateway-platform-ops.git
+    - git@github.com/franklin-antony/argocd-ws.git
     - https://charts.konghq.com
 
   # Only approved target namespaces on the in-cluster API server.
