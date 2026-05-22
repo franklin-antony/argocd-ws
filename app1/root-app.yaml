@@ -18,7 +18,7 @@ metadata:
 spec:
   project: kong-gateway
   source:
-    repoURL: git@github.com:<YOUR_GITHUB_ORG>/dda-kong-gateway-platform-ops.git
+    repoURL: git@github.com:franklin-antony/argocd-ws/edit/main/app1/root-app.yaml
     targetRevision: HEAD
     path: argocd/apps
   destination:
