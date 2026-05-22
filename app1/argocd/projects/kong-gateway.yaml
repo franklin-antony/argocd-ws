@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: kong-gateway
-  namespace: openshift-gitops
+  namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -16,7 +16,7 @@ spec:
   # Only approved target namespaces on the in-cluster API server.
   destinations:
     - server: https://kubernetes.default.svc
-      namespace: openshift-gitops
+      namespace: argocd
     - server: https://kubernetes.default.svc
       namespace: kong-cp-stg1-np
     - server: https://kubernetes.default.svc
