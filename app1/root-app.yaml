@@ -1,0 +1,33 @@
+# Root Application — the single bootstrap resource a cluster admin applies once.
+# It watches argocd/apps/ in this repo and manages all Application and ApplicationSet
+# resources declared there. Those resources then deploy Kong (stg1 active)
+# in strict wave order (namespaces → certs → CP → DP → routes).
+#
+# Bootstrap (one-time, after ArgoCD is installed by infra-ops):
+#   kubectl apply -f argocd/projects/kong-gateway.yaml -n openshift-gitops
+#   kubectl apply -f argocd/root-app.yaml -n openshift-gitops
+#
+# After that, every git push to argocd/apps/ is automatically reconciled.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kong-gateway-root
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: kong-gateway
+  source:
+    repoURL: git@github.com:<YOUR_GITHUB_ORG>/dda-kong-gateway-platform-ops.git
+    targetRevision: HEAD
+    path: argocd/apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
