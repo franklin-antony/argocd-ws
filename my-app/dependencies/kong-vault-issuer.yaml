@@ -1,0 +1,17 @@
+# Self-Signed ClusterIssuer for Kong Gateway Certificates
+#
+# NOTE: This is a DEVELOPMENT/TESTING issuer using self-signed certificates.
+# For production, replace with a proper Vault PKI issuer or ACME/Let's Encrypt.
+#
+# The original setup expects a Vault PKI issuer named 'kong-vault-issuer'.
+# This self-signed issuer allows certificates to be issued immediately for testing.
+
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: kong-vault-issuer
+  annotations:
+    description: "Self-signed issuer for Kong Gateway certificates (dev/testing only)"
+spec:
+  selfSigned: {}
