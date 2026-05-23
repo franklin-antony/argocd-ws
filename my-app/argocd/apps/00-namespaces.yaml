@@ -7,7 +7,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kong-namespaces
-  namespace: argocd
+  namespace: my-apps-ns
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   finalizers:
