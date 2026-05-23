@@ -16,8 +16,6 @@ spec:
     - server: https://kubernetes.default.svc
       namespace: argocd
     - server: https://kubernetes.default.svc
-      namespace: my-apps-ns
-    - server: https://kubernetes.default.svc
       namespace: kong-cp-stg1-np
     - server: https://kubernetes.default.svc
       namespace: kong-dp-stg1-np      
