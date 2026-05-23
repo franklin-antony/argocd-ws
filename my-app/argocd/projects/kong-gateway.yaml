@@ -14,6 +14,8 @@ spec:
   # Must allow the destination cluster + namespace from root-app.yaml
   destinations:
     - server: https://kubernetes.default.svc
+      namespace: argocd
+    - server: https://kubernetes.default.svc
       namespace: my-apps-ns
     - server: https://kubernetes.default.svc
       namespace: kong-cp-stg1-np
