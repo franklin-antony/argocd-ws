@@ -15,14 +15,14 @@ metadata:
 spec:
   project: kong-gateway
   source:
-    repoURL: git@github.com:<YOUR_GITHUB_ORG>/dda-kong-gateway-platform-ops.git
+    repoURL: https://github.com/franklin-antony/argocd-ws.git
     targetRevision: HEAD
     path: manifests
     directory:
       include: "namespaces.yaml"
   destination:
     server: https://kubernetes.default.svc
-    namespace: openshift-gitops
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
