@@ -22,7 +22,7 @@ spec:
       include: "namespaces.yaml"
   destination:
     server: https://kubernetes.default.svc
-    namespace: openshift-gitops
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
