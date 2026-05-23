@@ -15,6 +15,12 @@ spec:
   destinations:
     - server: https://kubernetes.default.svc
       namespace: my-apps-ns
+    - server: https://kubernetes.default.svc
+      namespace: openshift-gitops
+    - server: https://kubernetes.default.svc
+      namespace: kong-cp-stg1-np
+    - server: https://kubernetes.default.svc
+      namespace: kong-dp-stg1-np      
 
   # For now, allow any resource kinds
   clusterResourceWhitelist:
