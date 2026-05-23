@@ -1,0 +1,109 @@
+# Wave 1 — cert-manager Certificate resources. ArgoCD uses the custom Certificate
+# health check (configured in argocd-instance.yaml) to wait for each cert to reach
+# Ready=True (i.e. the TLS Secret has been written) before wave 2 starts.
+#
+# Per environment: cp-cert, dp-cert, admin-cert, manager-cert, proxy-cert
+#
+# Sync policy split:
+#   dev          → automated
+#   qa           → manual
+---
+# dev: automated sync (stg1 is manual — see block below)
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kong-certificates-auto
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  generators:
+    - list:
+        # ── REFERENCE ONLY — uncomment + activate testqa/dev in namespaces.yaml,
+        # and argocd/projects/ to enable these environments.
+        #
+        # - env: dev
+        #   namespace: kong-cp-dev-np
+        #   server: https://kubernetes.default.svc
+        elements: []
+  template:
+    metadata:
+      name: "kong-certificates-{{env}}"
+      namespace: openshift-gitops
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: kong-gateway
+      source:
+        repoURL: git@github.com:<YOUR_GITHUB_ORG>/dda-kong-gateway-platform-ops.git
+        targetRevision: HEAD
+        path: "manifests/cert-manager/{{env}}"
+      destination:
+        server: "{{server}}"
+        namespace: "{{namespace}}"
+      # cert-manager mutates Certificate resources after creation (renewedAt, notAfter,
+      # conditions, etc.). Ignoring status and managedFields prevents false out-of-sync
+      # after the initial certificate issuance.
+      ignoreDifferences:
+        - group: cert-manager.io
+          kind: Certificate
+          jsonPointers:
+            - /status
+            - /metadata/managedFields
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=false
+          - ServerSideApply=true
+          - RespectIgnoreDifferences=true
+---
+# stg1 + testqa: manual sync
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kong-certificates-manual
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  generators:
+    - list:
+        elements:
+          - env: stg1
+            namespace: kong-cp-stg1-np
+            server: https://kubernetes.default.svc
+          # - env: testqa
+          #   namespace: kong-cp-testqa-np
+          #   server: https://kubernetes.default.svc
+  template:
+    metadata:
+      name: "kong-certificates-{{env}}"
+      namespace: openshift-gitops
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: kong-gateway
+      source:
+        repoURL: git@github.com:<YOUR_GITHUB_ORG>/dda-kong-gateway-platform-ops.git
+        targetRevision: HEAD
+        path: "manifests/cert-manager/{{env}}"
+      destination:
+        server: "{{server}}"
+        namespace: "{{namespace}}"
+      ignoreDifferences:
+        - group: cert-manager.io
+          kind: Certificate
+          jsonPointers:
+            - /status
+            - /metadata/managedFields
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=false
+          - ServerSideApply=true
+          - RespectIgnoreDifferences=true
