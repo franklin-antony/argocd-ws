@@ -17,6 +17,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
+  preserveResourcesOnDeletion: true  # Prevent resource deletion when ApplicationSet is updated
   generators:
     - list:
         # ── REFERENCE ONLY — uncomment + activate testqa/dev in namespaces.yaml,
@@ -70,6 +71,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
+  preserveResourcesOnDeletion: true  # Prevent resource deletion when ApplicationSet is updated
   generators:
     - list:
         elements:
