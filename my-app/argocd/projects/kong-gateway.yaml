@@ -1,0 +1,25 @@
+# my-app/kong-gateway-project.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: kong-gateway
+  namespace: argocd
+spec:
+  description: Kong gateway platform (local variant)
+
+  # Must include the repo URL from root-app.yaml
+  sourceRepos:
+    - 'https://github.com/franklin-antony/argocd-ws.git'
+
+  # Must allow the destination cluster + namespace from root-app.yaml
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: my-apps-ns
+
+  # For now, allow any resource kinds
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'

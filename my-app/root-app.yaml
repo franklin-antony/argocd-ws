@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kong-gateway-root
+  namespace: argocd
+spec:
+  project: kong-gateway
+  source:
+    repoURL: https://github.com/franklin-antony/argocd-ws.git
+    targetRevision: HEAD
+    path: my-app/argocd/apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: my-apps-ns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
