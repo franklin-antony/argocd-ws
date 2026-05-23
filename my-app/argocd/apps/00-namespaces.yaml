@@ -1,0 +1,32 @@
+# Wave 0 — Namespaces are created first; every other resource depends on them.
+# Manages: manifests/namespaces.yaml  (kong-cp-dev-np, kong-cp-stg1-np, kong-cp-testqa-np)
+#
+# Single Application (not per-env): namespaces.yaml defines all three namespaces
+# in one file so one Application manages them all.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kong-namespaces
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: kong-gateway
+  source:
+    repoURL: https://github.com/franklin-antony/argocd-ws.git
+    targetRevision: HEAD
+    path: manifests
+    directory:
+      include: "namespaces.yaml"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true
