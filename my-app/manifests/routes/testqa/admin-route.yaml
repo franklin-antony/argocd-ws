@@ -1,0 +1,33 @@
+# REFERENCE ONLY — non-stg1 configuration is intentionally disabled for MVP scope.
+# Uncomment only when enabling this environment.
+#
+# # OpenShift Route — Kong Admin API (qa)
+# #
+# # TLS Passthrough: Kong terminates TLS, retaining full certificate context.
+# # The Route hostname must match the dnsName in manifests/cert-manager/qa/admin-cert.yaml
+# # and the admin_gui_api_url set in charts/kong-cp/qa.yaml.
+# #
+# # Replace <APPS_DOMAIN> with your OpenShift wildcard apps domain.
+#
+# apiVersion: route.openshift.io/v1
+# kind: Route
+# metadata:
+#   name: kong-admin-testqa
+#   namespace: kong-cp-testqa-np
+#   labels:
+#     app.kubernetes.io/name: kong-admin-testqa
+#     app.kubernetes.io/part-of: dda-kong-gateway
+#     app.kubernetes.io/component: control-plane
+#     digitaldubai.ae/environment: testqa
+# spec:
+#   host: kong-admin-testqa.<APPS_DOMAIN>
+#   to:
+#     kind: Service
+#     name: kong-cp-kong-admin
+#     weight: 100
+#   port:
+#     targetPort: 8444
+#   tls:
+#     termination: passthrough
+#     insecureEdgeTerminationPolicy: None
+#   wildcardPolicy: None

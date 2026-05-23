@@ -1,0 +1,33 @@
+# Kong Proxy TLS Certificate — stg1 environment
+#
+# Exposed externally via OpenShift Route (TLS passthrough).
+# Replace <APPS_DOMAIN> with your OpenShift wildcard apps domain.
+#
+# Secret:  kong-dp-stg1-np/kong-proxy-tls
+# Helm values:
+#   ssl_cert:     /etc/secrets/kong-proxy-tls/tls.crt
+#   ssl_cert_key: /etc/secrets/kong-proxy-tls/tls.key
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kong-proxy-cert
+  namespace: kong-dp-stg1-np
+  labels:
+    app.kubernetes.io/part-of: kong-gateway
+    app.kubernetes.io/component: data-plane
+    digitaldubai.ae/environment: stg1
+spec:
+  secretName: kong-proxy-tls
+  duration: 2160h    # 90 days
+  renewBefore: 360h  # 15 days before expiry
+  usages:
+    - server auth
+    - digital signature
+    - key encipherment
+  dnsNames:
+    - inbox-api-a.stg.dubai.gov.ae
+  issuerRef:
+    name: kong-vault-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

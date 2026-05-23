@@ -1,0 +1,33 @@
+# REFERENCE ONLY — non-stg1 configuration is intentionally disabled for MVP scope.
+# Uncomment only when enabling this environment.
+#
+# # OpenShift Route — Kong Proxy (dev)
+# #
+# # TLS Passthrough: Kong terminates TLS, enabling mTLS with upstreams,
+# # OIDC plugins, and SNI-based routing without double-proxy complexity.
+# #
+# # The Route hostname must match the dnsName in manifests/cert-manager/dev/proxy-cert.yaml.
+# # Replace <APPS_DOMAIN> with your OpenShift wildcard apps domain.
+#
+# apiVersion: route.openshift.io/v1
+# kind: Route
+# metadata:
+#   name: kong-proxy-dev
+#   namespace: kong-cp-dev-np
+#   labels:
+#     app.kubernetes.io/name: kong-proxy-dev
+#     app.kubernetes.io/part-of: dda-kong-gateway
+#     app.kubernetes.io/component: data-plane
+#     digitaldubai.ae/environment: dev
+# spec:
+#   host: kong-proxy-dev.<APPS_DOMAIN>
+#   to:
+#     kind: Service
+#     name: kong-dp-kong-proxy
+#     weight: 100
+#   port:
+#     targetPort: 8443
+#   tls:
+#     termination: passthrough
+#     insecureEdgeTerminationPolicy: None
+#   wildcardPolicy: None

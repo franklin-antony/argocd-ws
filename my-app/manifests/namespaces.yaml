@@ -1,0 +1,65 @@
+---
+# Non-prod namespaces — DDA Kong Gateway.
+# Naming: {product}-{component}-{env}-{site}
+# Infra namespaces (vault, cert-manager) managed by dda-kong-gateway-infra-ops.
+#
+# ── ACTIVE ───────────────────────────────────────────────────────────────────
+# kong-cp-stg1-np   Staging 1 Control Plane, non-prod site — MVP scope.
+# kong-dp-stg1-np   Staging 1 Data Plane, non-prod site — separate namespace per blueprint §4.4.2.
+#
+# ── REFERENCE ONLY (commented out — not deployed) ────────────────────────────
+# kong-cp-dev-np    Dev environment. Uncomment when dev environment is needed.
+# kong-cp-testqa-np Testing/QA. Uncomment when testing environment is needed.
+
+# ── Staging 1 — ACTIVE ───────────────────────────────────────────────────────
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kong-cp-stg1-np
+  labels:
+    app.kubernetes.io/part-of: kong-gateway
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/component: control-plane
+    digitaldubai.ae/environment: stg1
+    digitaldubai.ae/site: np
+    argocd.argoproj.io/managed-by: openshift-gitops
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kong-dp-stg1-np
+  labels:
+    app.kubernetes.io/part-of: kong-gateway
+    app.kubernetes.io/managed-by: argocd
+    app.kubernetes.io/component: data-plane
+    digitaldubai.ae/environment: stg1
+    digitaldubai.ae/site: np
+    argocd.argoproj.io/managed-by: openshift-gitops
+
+# ── Dev — REFERENCE ONLY ─────────────────────────────────────────────────────
+# Uncomment this block and the dev entries in argocd/apps/ to activate.
+#---
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: kong-cp-dev-np
+#  labels:
+#    app.kubernetes.io/part-of: kong-gateway
+#    app.kubernetes.io/managed-by: argocd
+#    digitaldubai.ae/environment: dev
+#    digitaldubai.ae/site: np
+#    argocd.argoproj.io/managed-by: openshift-gitops
+
+# ── Testing/QA — REFERENCE ONLY ──────────────────────────────────────────────
+# Uncomment this block and the testqa entries in argocd/apps/ to activate.
+#---
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: kong-cp-testqa-np
+#  labels:
+#    app.kubernetes.io/part-of: kong-gateway
+#    app.kubernetes.io/managed-by: argocd
+#    digitaldubai.ae/environment: testqa
+#    digitaldubai.ae/site: np
+#    argocd.argoproj.io/managed-by: openshift-gitops

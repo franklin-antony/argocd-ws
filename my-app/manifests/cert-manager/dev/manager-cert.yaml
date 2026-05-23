@@ -1,0 +1,32 @@
+# REFERENCE ONLY — non-stg1 configuration is intentionally disabled for MVP scope.
+# Uncomment only when enabling this environment.
+#
+# # Kong Manager TLS Certificate — dev environment
+# #
+# # Exposed externally via OpenShift Route (TLS passthrough).
+# # Replace <APPS_DOMAIN> with your OpenShift wildcard apps domain.
+# #
+# # Secret:  kong-cp-dev-np/kong-manager-tls
+# # Helm values:
+# #   admin_gui_ssl_cert:     /etc/secrets/kong-manager-tls/tls.crt
+# #   admin_gui_ssl_cert_key: /etc/secrets/kong-manager-tls/tls.key
+#
+# apiVersion: cert-manager.io/v1
+# kind: Certificate
+# metadata:
+#   name: kong-manager-cert
+#   namespace: kong-cp-dev-np
+#   labels:
+#     app.kubernetes.io/part-of: kong-gateway
+#     app.kubernetes.io/component: control-plane
+#     digitaldubai.ae/environment: dev
+# spec:
+#   secretName: kong-manager-tls
+#   duration: 2160h    # 90 days
+#   renewBefore: 360h  # 15 days before expiry
+#   dnsNames:
+#     - kong-manager-dev.<APPS_DOMAIN>
+#   issuerRef:
+#     name: kong-vault-issuer
+#     kind: ClusterIssuer
+#     group: cert-manager.io

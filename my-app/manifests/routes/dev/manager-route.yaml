@@ -1,0 +1,33 @@
+# REFERENCE ONLY — non-stg1 configuration is intentionally disabled for MVP scope.
+# Uncomment only when enabling this environment.
+#
+# # OpenShift Route — Kong Manager UI (dev)
+# #
+# # TLS Passthrough: Kong terminates TLS.
+# # The Route hostname must match the dnsName in manifests/cert-manager/dev/manager-cert.yaml
+# # and the admin_gui_url set in charts/kong-cp/dev.yaml.
+# #
+# # Replace <APPS_DOMAIN> with your OpenShift wildcard apps domain.
+#
+# apiVersion: route.openshift.io/v1
+# kind: Route
+# metadata:
+#   name: kong-manager-dev
+#   namespace: kong-cp-dev-np
+#   labels:
+#     app.kubernetes.io/name: kong-manager-dev
+#     app.kubernetes.io/part-of: dda-kong-gateway
+#     app.kubernetes.io/component: control-plane
+#     digitaldubai.ae/environment: dev
+# spec:
+#   host: kong-manager-dev.<APPS_DOMAIN>
+#   to:
+#     kind: Service
+#     name: kong-cp-kong-manager
+#     weight: 100
+#   port:
+#     targetPort: 8445
+#   tls:
+#     termination: passthrough
+#     insecureEdgeTerminationPolicy: None
+#   wildcardPolicy: None
