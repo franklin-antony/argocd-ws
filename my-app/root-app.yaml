@@ -11,7 +11,7 @@ spec:
     path: my-app/argocd/apps
   destination:
     server: https://kubernetes.default.svc
-    namespace: my-apps-ns
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
