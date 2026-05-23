@@ -17,7 +17,7 @@ spec:
   source:
     repoURL: https://github.com/franklin-antony/argocd-ws.git
     targetRevision: HEAD
-    path: manifests
+    path: my-app/manifests
     directory:
       include: "namespaces.yaml"
   destination:
