@@ -37,9 +37,9 @@ spec:
     spec:
       project: kong-gateway
       source:
-        repoURL: git@github.com:<YOUR_GITHUB_ORG>/dda-kong-gateway-platform-ops.git
+        repoURL: https://github.com/franklin-antony/argocd-ws.git
         targetRevision: HEAD
-        path: "manifests/cert-manager/{{env}}"
+        path: "my-app/manifests/cert-manager/{{env}}"
       destination:
         server: "{{server}}"
         namespace: "{{namespace}}"
@@ -90,9 +90,9 @@ spec:
     spec:
       project: kong-gateway
       source:
-        repoURL: git@github.com:<YOUR_GITHUB_ORG>/dda-kong-gateway-platform-ops.git
+        repoURL: https://github.com/franklin-antony/argocd-ws.git
         targetRevision: HEAD
-        path: "manifests/cert-manager/{{env}}"
+        path: "my-app/manifests/cert-manager/{{env}}"
       destination:
         server: "{{server}}"
         namespace: "{{namespace}}"
